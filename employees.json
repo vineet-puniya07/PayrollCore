@@ -78,5 +78,11 @@
     "department": "HR",
     "salary": 10000,
     "startDate": "2019-10-29"
+  },
+  {
+    "id": 1771321568451,
+    "name": "yash khandu",
+    "department": "Sales",
+    "salary": 25000
   }
 ]

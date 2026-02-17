@@ -3,31 +3,120 @@
 <head>
     <title>Edit Employee</title>
     <link rel="stylesheet" href="/style.css">
+
+<style>
+body{font-family:Arial;background:#f5f7fa;}
+.container{width:700px;margin:40px auto;background:white;padding:30px;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,0.1);}
+h2{text-align:center;margin-bottom:25px;}
+
+label{display:block;margin-top:15px;font-weight:bold;}
+input[type=text],select,textarea{width:100%;padding:8px;margin-top:6px;}
+
+.avatar-group{display:flex;gap:15px;margin-top:10px;}
+.avatar-group label{cursor:pointer;}
+.avatar-group img{width:60px;height:60px;border-radius:50%;border:3px solid transparent;}
+.avatar-group input{display:none;}
+.avatar-group input:checked + img{border:3px solid green;transform:scale(1.1);}
+
+.row{margin-top:10px;}
+.btns{margin-top:25px;display:flex;justify-content:space-between;}
+button{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;}
+.cancel{background:#ccc;}
+.submit{background:#28a745;color:white;}
+.reset{background:#999;color:white;}
+</style>
 </head>
+
 <body>
 
-<div class="form-card">
-<h2>Edit Employee</h2>
+<header class="topbar">
+    <h2>Edit Employee</h2>
+    <a href="/" class="add-btn">⬅ Back</a>
+</header>
 
-<form action="/edit/<%= employee.id %>" method="POST">
+<div class="container">
+<h2>Update Employee Payroll Form</h2>
 
+<form action="/update/<%= employee.id %>" method="POST">
+
+<!-- NAME -->
 <label>Name</label>
 <input type="text" name="name" value="<%= employee.name %>" required>
 
+<!-- AVATAR -->
+<label>Profile Image</label>
+<div class="avatar-group">
+<% let avatars=[
+"https://i.pravatar.cc/80?img=1",
+"https://i.pravatar.cc/80?img=2",
+"https://i.pravatar.cc/80?img=3",
+"https://i.pravatar.cc/80?img=4"
+]; %>
+
+<% avatars.forEach(a=>{ %>
+<label>
+<input type="radio" name="avatar" value="<%=a%>" <%= employee.avatar==a?'checked':'' %>>
+<img src="<%=a%>">
+</label>
+<% }) %>
+</div>
+
+<!-- GENDER -->
+<label>Gender</label>
+<div class="row">
+<input type="radio" name="gender" value="Male" <%= employee.gender=='Male'?'checked':'' %>> Male
+<input type="radio" name="gender" value="Female" <%= employee.gender=='Female'?'checked':'' %>> Female
+</div>
+
+<!-- DEPARTMENT -->
 <label>Department</label>
-<select name="department" required>
-    <option <%= employee.department=='HR'?'selected':'' %>>HR</option>
-    <option <%= employee.department=='Sales'?'selected':'' %>>Sales</option>
-    <option <%= employee.department=='Finance'?'selected':'' %>>Finance</option>
-    <option <%= employee.department=='Engineer'?'selected':'' %>>Engineer</option>
+<div class="row">
+<% const deps=["HR","Sales","Finance","Engineer","Others"]; %>
+<% deps.forEach(d=>{ %>
+<input type="checkbox" name="department" value="<%=d%>"
+<%= employee.department.includes(d)?'checked':'' %>> <%=d%>
+<% }) %>
+</div>
+
+<!-- SALARY -->
+<label>Salary</label>
+<select name="salary">
+<% [10000,20000,30000,40000,50000].forEach(s=>{ %>
+<option value="<%=s%>" <%= employee.salary==s?'selected':'' %>><%=s%></option>
+<% }) %>
 </select>
 
-<label>Salary</label>
-<input type="number" name="salary" value="<%= employee.salary %>" min="1" required>
+<!-- DATE -->
+<label>Start Date</label>
+<div class="row">
+<select name="day">
+<% for(let i=1;i<=31;i++){ %>
+<option <%= employee.day==i?'selected':'' %>><%=i%></option>
+<% } %>
+</select>
 
-<div class="form-actions">
-    <a href="/" class="cancel">Cancel</a>
-    <button type="submit">Update</button>
+<select name="month">
+<% const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; %>
+<% months.forEach(m=>{ %>
+<option <%= employee.month==m?'selected':'' %>><%=m%></option>
+<% }) %>
+</select>
+
+<select name="year">
+<% for(let i=2015;i<=2030;i++){ %>
+<option <%= employee.year==i?'selected':'' %>><%=i%></option>
+<% } %>
+</select>
+</div>
+
+<!-- NOTES -->
+<label>Notes</label>
+<textarea name="notes"><%= employee.notes %></textarea>
+
+<div class="btns">
+<button type="button" class="cancel" onclick="location.href='/'">Cancel</button>
+<button type="submit" class="submit">Update</button>
+<button type="reset" class="reset">Reset</button>
 </div>
 
 </form>
