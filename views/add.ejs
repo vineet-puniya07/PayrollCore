@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Employee</title>
+    <link rel="stylesheet" href="/style.css">
+
+    <style>
+        body{
+            font-family: Arial;
+            background:#f5f7fa;
+        }
+
+        .container{
+            width:700px;
+            margin:40px auto;
+            background:white;
+            padding:30px;
+            border-radius:8px;
+            box-shadow:0 0 10px rgba(0,0,0,0.1);
+        }
+
+        h2{
+            text-align:center;
+            margin-bottom:25px;
+        }
+
+        label{
+            display:block;
+            margin-top:15px;
+            font-weight:bold;
+        }
+
+        input[type=text], select, textarea{
+            width:100%;
+            padding:8px;
+            margin-top:6px;
+        }
+
+        .avatar-group{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-top:10px;
+}
+
+.avatar-group label{
+    display:flex;
+    align-items:center;
+    cursor:pointer;
+}
+
+.avatar-group img{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    border:3px solid transparent;
+    transition:0.2s;
+}
+
+.avatar-group input{
+    display:none;
+}
+
+.avatar-group input:checked + img{
+    border:3px solid #28a745;
+    transform:scale(1.1);
+}
+
+
+        .row{
+            margin-top:10px;
+        }
+
+        .btns{
+            margin-top:25px;
+            display:flex;
+            justify-content:space-between;
+        }
+
+        button{
+            padding:10px 20px;
+            border:none;
+            border-radius:4px;
+            cursor:pointer;
+        }
+
+        .cancel{background:#ccc;}
+        .submit{background:#28a745;color:white;}
+        .reset{background:#999;color:white;}
+
+        .error{
+            color:red;
+            margin-top:10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Employee Payroll Form</h2>
+
+    <form action="/add" method="POST" onsubmit="return validateForm()">
+
+        <!-- NAME -->
+        <label>Name</label>
+        <input type="text" name="name" id="name">
+
+        <!-- AVATAR -->
+        <label>Profile Image</label>
+        <div class="avatar-group">
+            <label>
+                <input type="radio" name="avatar" value="https://i.pravatar.cc/80?img=1" required>
+                <img src="https://i.pravatar.cc/80?img=1">
+            </label>
+
+            <label>
+                <input type="radio" name="avatar" value="https://i.pravatar.cc/80?img=2">
+                <img src="https://i.pravatar.cc/80?img=2">
+            </label>
+
+            <label>
+                <input type="radio" name="avatar" value="https://i.pravatar.cc/80?img=3">
+                <img src="https://i.pravatar.cc/80?img=3">
+            </label>
+
+            <label>
+                <input type="radio" name="avatar" value="https://i.pravatar.cc/80?img=4">
+                <img src="https://i.pravatar.cc/80?img=4">
+            </label>
+        </div>
+
+        <!-- GENDER -->
+        <label>Gender</label>
+        <div class="row">
+            <input type="radio" name="gender" value="Male" required> Male
+            <input type="radio" name="gender" value="Female"> Female
+        </div>
+
+        <!-- DEPARTMENT -->
+        <label>Department</label>
+        <div class="row">
+            <input type="checkbox" name="department" value="HR"> HR
+            <input type="checkbox" name="department" value="Sales"> Sales
+            <input type="checkbox" name="department" value="Finance"> Finance
+            <input type="checkbox" name="department" value="Engineer"> Engineer
+            <input type="checkbox" name="department" value="Others"> Others
+        </div>
+
+        <!-- SALARY -->
+        <label>Salary</label>
+        <select name="salary" id="salary">
+            <option value="">Select Salary</option>
+            <option value="10000">10000</option>
+            <option value="20000">20000</option>
+            <option value="30000">30000</option>
+            <option value="40000">40000</option>
+            <option value="50000">50000</option>
+        </select>
+
+        <!-- DATE -->
+        <label>Start Date</label>
+        <div class="row">
+            <select name="day">
+                <option>Day</option>
+                <% for(let i=1;i<=31;i++){ %>
+                    <option><%= i %></option>
+                <% } %>
+            </select>
+
+            <select name="month">
+                <option>Month</option>
+                <option>Jan</option><option>Feb</option><option>Mar</option>
+                <option>Apr</option><option>May</option><option>Jun</option>
+                <option>Jul</option><option>Aug</option><option>Sep</option>
+                <option>Oct</option><option>Nov</option><option>Dec</option>
+            </select>
+
+            <select name="year">
+                <option>Year</option>
+                <% for(let i=2015;i<=2030;i++){ %>
+                    <option><%= i %></option>
+                <% } %>
+            </select>
+        </div>
+
+        <!-- NOTES -->
+        <label>Notes</label>
+        <textarea name="notes" rows="4"></textarea>
+
+        <div class="error" id="error"></div>
+
+        <!-- BUTTONS -->
+        <div class="btns">
+            <button type="button" class="cancel" onclick="location.href='/'">Cancel</button>
+            <button type="submit" class="submit">Submit</button>
+            <button type="reset" class="reset">Reset</button>
+        </div>
+
+    </form>
+</div>
+
+<script>
+function validateForm(){
+    const name=document.getElementById("name").value.trim();
+    const salary=document.getElementById("salary").value;
+    const error=document.getElementById("error");
+
+    if(name===""){
+        error.innerText="Name cannot be empty";
+        return false;
+    }
+
+    if(salary==="" || salary<0){
+        error.innerText="Invalid salary";
+        return false;
+    }
+
+    error.innerText="";
+    return true;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Payroll</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <h2>Employee Payroll</h2>
+    <a href="/add" class="add-btn">+ Add User</a>
+</header>
+
+<div class="container">
+    <h3>Employee Details</h3>
+
+    <table class="emp-table">
+        <tr>
+            <th>Name</th>
+            <th>Department</th>
+            <th>Salary</th>
+            <th>Tax (12%)</th>
+            <th>Net Salary</th>
+            <th>Actions</th>
+        </tr>
+
+        <% employees.forEach(emp => { 
+            let tax = emp.salary * 0.12;
+            let net = emp.salary - tax;
+        %>
+        <tr>
+            <td class="name-cell">
+                <img src="https://i.pravatar.cc/40?u=<%= emp.id %>">
+                <%= emp.name %>
+            </td>
+            <td>
+                <span class="badge"><%= emp.department %></span>
+            </td>
+            <td>₹<%= emp.salary %></td>
+            <td>₹<%= tax.toFixed(2) %></td>
+            <td class="net">₹<%= net.toFixed(2) %></td>
+            <td class="actions">
+
+    <a href="/edit/<%= emp.id %>" class="icon-btn edit" title="Edit">
+        <svg viewBox="0 0 24 24" width="18">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z"/>
+            <path d="M20.71 7.04a1 1 0 0 0 0-1.41L18.37 3.29a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+        </svg>
+    </a>
+
+    <a href="/delete/<%= emp.id %>" class="icon-btn delete" 
+       onclick="return confirm('Delete this employee?')" title="Delete">
+        <svg viewBox="0 0 24 24" width="18">
+            <path d="M6 7h12l-1 14H7L6 7z"/>
+            <path d="M9 4h6l1 2H8l1-2z"/>
+        </svg>
+    </a>
+
+</td>
+        </tr>
+        <% }) %>
+    </table>
+</div>
+
+</body>
+</html>
