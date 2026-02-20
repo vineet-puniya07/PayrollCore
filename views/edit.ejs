@@ -10,7 +10,7 @@ body{font-family:Arial;background:#f5f7fa;}
 h2{text-align:center;margin-bottom:25px;}
 
 label{display:block;margin-top:15px;font-weight:bold;}
-input[type=text],select,textarea{width:100%;padding:8px;margin-top:6px;}
+input[type=text],input[type=date],select,textarea{width:100%;padding:8px;margin-top:6px;}
 
 .avatar-group{display:flex;gap:15px;margin-top:10px;}
 .avatar-group label{cursor:pointer;}
@@ -89,24 +89,7 @@ button{padding:10px 20px;border:none;border-radius:4px;cursor:pointer;}
 <!-- DATE -->
 <label>Start Date</label>
 <div class="row">
-<select name="day">
-<% for(let i=1;i<=31;i++){ %>
-<option <%= employee.day==i?'selected':'' %>><%=i%></option>
-<% } %>
-</select>
-
-<select name="month">
-<% const months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]; %>
-<% months.forEach(m=>{ %>
-<option <%= employee.month==m?'selected':'' %>><%=m%></option>
-<% }) %>
-</select>
-
-<select name="year">
-<% for(let i=2015;i<=2030;i++){ %>
-<option <%= employee.year==i?'selected':'' %>><%=i%></option>
-<% } %>
-</select>
+<input type="date" name="startDate" value="<%= employee.startDate %>">
 </div>
 
 <!-- NOTES -->

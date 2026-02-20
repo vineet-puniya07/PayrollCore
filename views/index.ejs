@@ -30,6 +30,7 @@
             <th>Name</th>
             <th>Department</th>
             <th>Salary</th>
+            <th>Start Date</th>
             <th>Tax (12%)</th>
             <th>Net Salary</th>
             <th>Actions</th>
@@ -48,6 +49,7 @@
                 <span class="badge"><%= emp.department %></span>
             </td>
             <td>₹<%= emp.salary %></td>
+            <td><%= emp.startDate || 'N/A' %></td>
             <td>₹<%= tax.toFixed(2) %></td>
             <td class="net">₹<%= net.toFixed(2) %></td>
             <td class="actions">

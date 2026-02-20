@@ -36,19 +36,24 @@ app.get("/add", (req, res) => {
 
 // Add employee
 app.post("/add", async (req, res) => {
-    let { name, department, salary } = req.body;
+    let { name, avatar, gender, department, salary, startDate, notes } = req.body;
     salary = Number(salary);
 
     if (!name || !department || salary <= 0)
         return res.send("Invalid input");
 
+    const deptValue = Array.isArray(department) ? department.join(", ") : department;
     const employees = await readEmployees();
 
     employees.push({
         id: Date.now(),
         name,
-        department,
-        salary
+        avatar: avatar || "",
+        gender: gender || "",
+        department: deptValue,
+        salary,
+        startDate: startDate || "",
+        notes: notes || ""
     });
 
     await writeEmployees(employees);
@@ -71,7 +76,7 @@ app.get("/delete/:id", async (req, res) => {
 // Update employee
 app.post("/update/:id", async (req, res) => {
     const id = Number(req.params.id);
-    let { name, avatar, gender, department, salary, day, month, year, notes } = req.body;
+    let { name, avatar, gender, department, salary, startDate, notes } = req.body;
     salary = Number(salary);
 
     if (!name || !department || salary <= 0)
@@ -92,9 +97,7 @@ app.post("/update/:id", async (req, res) => {
         gender: gender || "",
         department: deptValue, 
         salary,
-        day: day || "",
-        month: month || "",
-        year: year || "",
+        startDate: startDate || "",
         notes: notes || ""
     };
 
@@ -113,24 +116,6 @@ app.get("/edit/:id", async (req, res) => {
     res.render("edit", { employee });
 });
 
-
-// Update employee (POST - alternate route)
-app.post("/edit/:id", async (req, res) => {
-    const id = Number(req.params.id);
-    let { name, department, salary } = req.body;
-    salary = Number(salary);
-
-    if (!name || !department || salary <= 0)
-        return res.send("Invalid input");
-
-    const employees = await readEmployees();
-    const index = employees.findIndex(emp => emp.id === id);
-
-    employees[index] = { id, name, department, salary };
-
-    await writeEmployees(employees);
-    res.redirect("/");
-});
 
 app.listen(PORT, () => {
     console.log(`Server running: http://localhost:${PORT}`);

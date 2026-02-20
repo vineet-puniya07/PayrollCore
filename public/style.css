@@ -270,6 +270,7 @@ form>label {
 
 /* INPUTS */
 input[type=text],
+input[type=date],
 select,
 textarea {
     flex: 1;
@@ -282,6 +283,7 @@ textarea {
 }
 
 input[type=text]:focus,
+input[type=date]:focus,
 select:focus,
 textarea:focus {
     border-color: #7fb800;
@@ -444,6 +446,7 @@ button:hover {
     
     /* Inputs */
     input[type="text"],
+    input[type="date"],
     select,
     textarea {
         width: 100%;
@@ -595,6 +598,7 @@ button:hover {
     }
     
     input[type="text"],
+    input[type="date"],
     select,
     textarea {
         padding: 8px 10px;
