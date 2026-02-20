@@ -11,8 +11,19 @@
     <a href="/add" class="add-btn">+ Add User</a>
 </header>
 
-<div class="container">
+<div class="containerr">
     <h3>Employee Details</h3>
+    
+    <!-- Search Bar -->
+    <div class="search-bar">
+        <form action="/" method="GET" style="display: flex; gap: 10px;">
+            <input type="text" name="search" placeholder="Search by name or department..." value="<%= typeof searchQuery !== 'undefined' ? searchQuery : '' %>">
+            <button type="submit" class="search-btn">Search</button>
+            <% if (typeof searchQuery !== 'undefined' && searchQuery) { %>
+                <a href="/" class="clear-btn">Clear</a>
+            <% } %>
+        </form>
+    </div>
 
     <table class="emp-table">
         <tr>
@@ -64,3 +75,4 @@
 
 </body>
 </html>
+

@@ -11,10 +11,20 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
 
-// Dashboard
+// Dashboard with search
 app.get("/", async (req, res) => {
     const employees = await readEmployees();
-    res.render("index", { employees });
+    const searchQuery = req.query.search ? req.query.search.toLowerCase() : "";
+    
+    let filteredEmployees = employees;
+    if (searchQuery) {
+        filteredEmployees = employees.filter(emp => 
+            emp.name.toLowerCase().includes(searchQuery) ||
+            emp.department.toLowerCase().includes(searchQuery)
+        );
+    }
+    
+    res.render("index", { employees: filteredEmployees, searchQuery });
 });
 
 
@@ -58,7 +68,41 @@ app.get("/delete/:id", async (req, res) => {
 });
 
 
-// Edit form
+// Update employee
+app.post("/update/:id", async (req, res) => {
+    const id = Number(req.params.id);
+    let { name, avatar, gender, department, salary, day, month, year, notes } = req.body;
+    salary = Number(salary);
+
+    if (!name || !department || salary <= 0)
+        return res.send("Invalid input");
+
+    // Handle department as checkbox (can be array or string)
+    const deptValue = Array.isArray(department) ? department.join(", ") : department;
+
+    const employees = await readEmployees();
+    const index = employees.findIndex(emp => emp.id === id);
+
+    if (index === -1) return res.send("Employee not found");
+
+    employees[index] = { 
+        id, 
+        name, 
+        avatar: avatar || "",
+        gender: gender || "",
+        department: deptValue, 
+        salary,
+        day: day || "",
+        month: month || "",
+        year: year || "",
+        notes: notes || ""
+    };
+
+    await writeEmployees(employees);
+    res.redirect("/");
+});
+
+// Edit form (GET)
 app.get("/edit/:id", async (req, res) => {
     const id = Number(req.params.id);
     const employees = await readEmployees();
@@ -70,7 +114,7 @@ app.get("/edit/:id", async (req, res) => {
 });
 
 
-// Update employee
+// Update employee (POST - alternate route)
 app.post("/edit/:id", async (req, res) => {
     const id = Number(req.params.id);
     let { name, department, salary } = req.body;
