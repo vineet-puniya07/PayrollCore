@@ -52,36 +52,38 @@ PayrollCore/
 ```mermaid
 flowchart TD
     Browser(["🌐 Browser / Client"])
+    Entry["📄 server.js - Entry Point"]
 
-    subgraph Express["Express Server · server.js"]
-        R1["GET /\nDashboard + Search"]
-        R2["GET /add\nAdd Form"]
-        R3["POST /add\nCreate Employee"]
-        R4["GET /edit/:id\nEdit Form"]
-        R5["POST /update/:id\nUpdate Employee"]
-        R6["GET /delete/:id\nDelete Employee"]
+    subgraph Express["Express Routes"]
+        R1["GET / - Dashboard + Search"]
+        R2["GET /add - Add Form"]
+        R3["POST /add - Create Employee"]
+        R4["GET /edit/:id - Edit Form"]
+        R5["POST /update/:id - Update Employee"]
+        R6["GET /delete/:id - Delete Employee"]
     end
 
     subgraph FileHandler["modules/filehandler.js"]
-        FH_R["readEmployees()\nfs.readFile → JSON.parse"]
-        FH_W["writeEmployees()\nJSON.stringify → fs.writeFile"]
+        FH_R["readEmployees() - fs.readFile + JSON.parse"]
+        FH_W["writeEmployees() - JSON.stringify + fs.writeFile"]
     end
 
     subgraph DataStore["Data Store"]
         JSON[("📄 employees.json")]
     end
 
-    subgraph Views["views/ · EJS Templates"]
-        V1["index.ejs\nEmployee List"]
-        V2["add.ejs\nAdd Form"]
-        V3["edit.ejs\nEdit Form"]
+    subgraph Views["views/ - EJS Templates"]
+        V1["index.ejs - Employee List"]
+        V2["add.ejs - Add Form"]
+        V3["edit.ejs - Edit Form"]
     end
 
-    subgraph Static["public/\nStatic Assets"]
+    subgraph Static["public/ - Static Assets"]
         CSS["CSS / Images"]
     end
 
-    Browser -- "HTTP Request" --> Express
+    Browser -- "HTTP Request" --> Entry
+    Entry --> Express
 
     R1 --> FH_R
     R3 --> FH_R
